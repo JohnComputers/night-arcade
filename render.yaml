@@ -1,0 +1,23 @@
+# One free Node service serves the frontend and Socket.IO on the same origin.
+# Keep plan: free explicit: omitting it can select paid compute.
+services:
+  - type: web
+    name: night-arcade
+    runtime: node
+    plan: free
+    region: virginia
+    buildCommand: npm ci --include=dev && npm test && npm run build && npm prune --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeployTrigger: "off"
+    envVars:
+      - key: NODE_VERSION
+        value: 24.14.1
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: MAX_ROOMS
+        value: "20"
+      - key: ROOM_IDLE_MINUTES
+        value: "120"
